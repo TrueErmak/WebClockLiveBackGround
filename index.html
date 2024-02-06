@@ -10,12 +10,12 @@
             padding: 0;
             overflow: hidden;
             height: 100%;
-            background-image: url('background2.gif'); /* Your background image */
+            
             background-size: cover;
             background-position: center;
             position: relative;
         }
-                        .watch {
+       .watch {
                 width: 400px;
                 height: 400px;
                 position: absolute; /* or 'fixed' if you want it to stay in place on scroll */
@@ -31,83 +31,38 @@
             height: 100%;
             z-index: 1; /* Particle system sits below the clock */
         }
+        .video-background {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%; 
+            min-height: 100%;
+            width: auto; 
+            height: auto;
+            z-index: -100;
+        }
+        .video-background video {
+            width: 100%;
+            height: 100%;
+            -o-object-fit: cover;
+            object-fit: cover;
+        }
+        
     </style>
 </head>
 <body>
 
+    
+    <div class="video-background">
+        <video autoplay loop muted playsinline>
+            <source src="background4.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
 
     <canvas id="clockCanvas" width="200" height="200"></canvas>
-    <canvas id="particleCanvas"></canvas>
     
-    <script>
-        const canvas = document.getElementById('particleCanvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    
-        let particles = [];
-        const numberOfParticles = 150;
-    
-    class Particle {
-    constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.speedX = (Math.random() - 0.5) * 2;
-        this.speedY = (Math.random() - 0.5) * 2;
-        this.size = Math.random() * 5 + 5; // Adjust size for larger "smoke" particles
-        // Set a fixed color for all particles
-        this.color = 'rgba(255, 0, 0'; // Example: white smoke
-
-            //this.color = `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)},`;
-    }
-
-    update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-
-        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
-    }
-
-    draw() {
-        // Creating a gradient for a smokey effect with fixed color but varying opacity
-        let gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
-        gradient.addColorStop(0, this.color + ', 1)'); // Center of the particle is fully opaque
-        gradient.addColorStop(1, this.color + ', 0)'); // Edge of the particle fades to transparent
-
-        ctx.fillStyle = gradient;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-    }
-}
-    
-        function init() {
-            for (let i = 0; i < numberOfParticles; i++) {
-                particles.push(new Particle());
-            }
-        }
-    
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(particle => {
-                particle.update();
-                particle.draw();
-            });
-            requestAnimationFrame(animate);
-        }
-    
-        init();
-        animate();
-    
-        // Resize canvas on window resize
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            particles = [];
-            init();
-        });
-    </script>
     
 
 <div id="watch" class="watch"></div>
